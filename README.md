@@ -1,5 +1,5 @@
 # Project Snake Solver
-Author: James Sipowicz
+Author: James Sipowicz -
    Spring Semester 2021 - Texas State University Computer Science
 
 Step 1:

@@ -10,7 +10,6 @@ Step 1:
   
 *What are the steps it takes to make a game of Snake in Python?*
 
- # STEPS OF DEVELOPING SNAKE
 1. Install appropriate libraries (Pygame)
 2. Create a game Screen
 3. Create the Snake object

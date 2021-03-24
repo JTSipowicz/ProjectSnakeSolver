@@ -1,7 +1,6 @@
 # Project Snake Solver
 Author: James Sipowicz
-Spring Semester 2021
-Texas State University Computer Science
+   Spring Semester 2021 - Texas State University Computer Science
 
 Step 1:
 - Create a sophisticated game of Snake in Python. It should have a sophisticated GUI, 

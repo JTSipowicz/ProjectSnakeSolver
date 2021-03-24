@@ -22,6 +22,13 @@ Step 1:
 11. Make sure it displays in the terminal how the game ended with record of score.
 12. Make sure game states are stored in a standard formatting.
 
+*How are we gonna document this?*
+
+After successfully completing each step, save the most advanced state of the game to Master
+- Document in the name the most complete version.
+
+If a version isn't completely correct, save it as a branch.
+
 Step 2:
 - Create an AI mode that can start its own game.
 - Use Tensorflow train the AI.

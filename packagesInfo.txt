@@ -1,0 +1,10 @@
+Project Snake Solver
+TXST Software Engineering Project
+Author: James Sipowicz
+3/30/2021
+
+Our game utilizes the following libraries that will need to be installed to run our game.
+These libraries/packages are installed by the syntax 'pip install ...' The dots represent library names.
+- pygame 
+- time
+- random

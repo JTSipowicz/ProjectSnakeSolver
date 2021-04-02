@@ -8,11 +8,9 @@ class Snake:
     def __init__(self, surface, color, x, y):
         self.surface = surface
         self.color = color
-        self.length = 2
         self.head = [x, y]
         self.hasEaten = False
         self.direction = 'RIGHT'
-        self.previous = self.direction
         self.segments = [[x, y], [x - LENGTH, y], [x - (LENGTH * 2), y], [x - (LENGTH * 3), y]]
         self.draw_snake()
 

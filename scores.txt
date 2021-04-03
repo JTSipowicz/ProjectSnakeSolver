@@ -1,0 +1,6 @@
+0|Player|109
+1|AI|98
+2|AI|92
+3|AI|86
+4|Player|46
+5|Player|13

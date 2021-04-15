@@ -3,12 +3,12 @@ Author: James Sipowicz -
    Spring Semester 2021 - Texas State University Computer Science
 
 Step 1:
-- Create a sophisticated game of Snake in Python. It should have a sophisticated GUI, 
+-> Create a sophisticated game of Snake in Python. It should have a sophisticated GUI, 
   which records its own states (in some sort of way) with intention of recording instances
   of error.
   
 * Which language will we be using? *
-- Python 3
+-> Python 3
  
 * What are the steps it takes to make a game of Snake in Python? *
 

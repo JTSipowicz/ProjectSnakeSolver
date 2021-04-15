@@ -10,12 +10,12 @@ def compareSquares(x1, x2, y1, y2, square1_length, square2_length):
     top_left2 = (x2 - 1, y2 - square2_length + 1)
     top_right2 = (x2 + square2_length - 1, y2 - square1_length + 1)
 
-    if low_right1[0] >= low_left2[0] and low_left1[0] <= low_right2[0] and low_left1[1] >= (top_left2[1] - 1) and top_left1[1] <= (low_left2[1] + 1):
+    if low_right1[0] > low_left2[0] and low_left1[0] < low_right2[0] and low_left1[1] > (top_left2[1] - 1) and top_left1[1] < (low_left2[1] + 1):
                     return True
-    elif low_left1[0] <= low_right2[0] and low_right1[0] >= low_left2[0] and low_left1[1] >= (top_left2[1] - 1) and top_left1[1] <= (low_left2[1] + 1):
+    elif low_left1[0] < low_right2[0] and low_right1[0] > low_left2[0] and low_left1[1] > (top_left2[1] - 1) and top_left1[1] < (low_left2[1] + 1):
                     return True
-    elif low_left1[1] >= top_left2[1] and top_left1[1] <= low_left2[1] and low_left1[0] <= (low_right2[0] + 1) and low_right1[0] >= (low_left2[0] - 1):
+    elif low_left1[1] > top_left2[1] and top_left1[1] < low_left2[1] and low_left1[0] < (low_right2[0] + 1) and low_right1[0] > (low_left2[0] - 1):
                     return True
-    elif top_left1[1] <= low_left2[1] and low_left1[1] >= top_left2[1] and low_left1[0] <= (low_right2[0] + 1) and low_right1[0] >= (low_left2[0] - 1):
+    elif top_left1[1] < low_left2[1] and low_left1[1] > top_left2[1] and low_left1[0] < (low_right2[0] + 1) and low_right1[0] > (low_left2[0] - 1):
                     return True
     return False

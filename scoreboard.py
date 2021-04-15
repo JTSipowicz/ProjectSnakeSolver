@@ -55,8 +55,6 @@ class Scoreboard:
                 "Score": int(separate[2])
             }
             self.high_scores.append(temp_score)
-        print(self.high_scores)
-
 
     def save_scores(self):
         text = ''
@@ -71,6 +69,9 @@ class Scoreboard:
 
     def get_score(self):
         return self.score
+
+    def get_high_scores(self, index):
+        return self.high_scores[index]
         
     def set_type_AI(self):
         self.isAI = True

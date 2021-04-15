@@ -7,25 +7,66 @@ from game import game_loop
 scoreboard = Scoreboard()
 scoreboard.load_scores()
 
-def main_loop():
-    window = Tk()
+class Menu(Tk):
+    def __init__(self):
+        Tk.__init__(self)
+        self.title("Snake Solver")
+        self["bg"] = COLORS["background"]
+        self.config(padx=30, pady=60)
+
+        ####################################### Main Menu #########################################################################################
+        self.menu_frame = Frame(self)
+        self.menu_frame['bg'] = COLORS["background"]
+
+        #############################################################################################################################################
+
+        ###################################### Scoreboard Menu ######################################################################################
+        self.scoreboard_frame = Frame(self)
+        self.scoreboard_frame['bg'] = COLORS["background"]
+
+        ####################################### Main Menu Widgets ##########################################################################
+        title_label = Label(self.menu_frame, text="Snake Solver", font=("Noto Sans", 32, "bold"), bg=COLORS['background'], fg=COLORS["text_color"])
+        title_label.grid(column=0, row=0, pady=30)
+
+        play_button = Button(self.menu_frame, text="Play Snake", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=lambda: game_loop(scoreboard, 'Player'))
+        play_button.grid(column=0, row=1, pady=30)
+
+        AI_button = Button(self.menu_frame, text="Manage AI", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=game_loop)
+        AI_button.grid(column=0, row=2, pady=30)
+
+        score_button = Button(self.menu_frame, text="Scoreboard", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=self.show_scoreboard)
+        score_button.grid(column=0, row=3, pady=30)
+        ###########################################################################################################################################
+
+        ##################################### Scoreboard Widgets ################################################################################
+        score_title_label = Label(self.scoreboard_frame, text="Scoreboard", font=("Noto Sans", 32, "bold"), bg=COLORS['background'], fg=COLORS["text_color"])
+        score_title_label.grid(column=0, row=0, pady=30, sticky="W")
+
+        score_go_back_button = Button(self.scoreboard_frame, text="Back", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=self.show_main_menu)
+        score_go_back_button.grid(column=2, row=0, pady=30, sticky="E")
+
+        scoreboard_text = Text(self.scoreboard_frame, font=("Noto Sans", 32, "bold"), bg=COLORS['background'], fg=COLORS["text_color"], width=20, height=11)
+        for i in range(10):
+            score = scoreboard.get_high_scores(i)
+            text = str(score["Place"]) + '\t' + score["Type"] + '\t' + str(score["Score"]) + '\n'
+            scoreboard_text.insert(END, text)
+        scoreboard_text.grid(column=0, columnspan=3, row=2)
+        ################################################################################################################################################
+        
+        self.show_main_menu()
+        
+
+    def show_main_menu(self):
+        self.scoreboard_frame.grid_forget()
+        self.menu_frame.grid(column=0, row=0)
+
+    def show_scoreboard(self):
+        self.menu_frame.grid_forget()
+        self.scoreboard_frame.grid(column=0, row=0)
+
     
-    window.title("Snake Solver")
-    window["bg"] = COLORS["background"]
-    window.config(padx=30, pady=60)
 
-    title_label = Label(text="Snake Solver", font=("Noto Sans", 32, "bold"), bg=COLORS['background'], fg=COLORS["text_color"])
-    title_label.grid(column=0, row=0, pady=30)
 
-    play_button = Button(text="Play Snake", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=lambda: game_loop(scoreboard, 'Player'))
-    play_button.grid(column=0, row=1, pady=30)
 
-    AI_button = Button(text="Manage AI", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=game_loop)
-    AI_button.grid(column=0, row=2, pady=30)
-
-    score_button = Button(text="Scoreboard", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=game_loop)
-    score_button.grid(column=0, row=3, pady=30)
-
-    window.mainloop()
-
-main_loop()
+app = Menu()
+app.mainloop()

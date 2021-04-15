@@ -2,5 +2,9 @@
 1|AI|98
 2|AI|92
 3|AI|86
-4|Player|46
-5|Player|13
+4|Player|49
+5|Player|46
+6|Player|42
+7|Player|39
+8|Player|24
+9|Player|16

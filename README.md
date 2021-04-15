@@ -1,11 +1,17 @@
 # Project Snake Solver
-Author: James Sipowicz
+**Author**: 
 
-Establishment: Texas State University Computer Science
+James Sipowicz
 
-Semester: Spring 2021
+**Establishment**: 
 
-Step 1:
+Texas State University Computer Science
+
+**Semester**: 
+
+Spring 2021
+
+**Step 1:**
 
 -> Create a sophisticated game of Snake in Python. It should have a sophisticated GUI, 
   which records its own states (in some sort of way) with intention of recording instances
@@ -36,7 +42,7 @@ After successfully completing each step, save the most advanced state of the gam
 
 If a version isn't completely correct, save it as a branch.
 
-Step 2:
+**Step 2:**
 
 - Create an AI mode that can start its own game.
 - Use Tensorflow train the AI.

@@ -7,10 +7,10 @@ Step 1:
   which records its own states (in some sort of way) with intention of recording instances
   of error.
   
-* Which language will we be using? *
+*Which language will we be using?*
 -> Python 3
  
-* What are the steps it takes to make a game of Snake in Python? *
+*What are the steps it takes to make a game of Snake in Python?*
 
 1. Install appropriate libraries
 2. Create a game Screen

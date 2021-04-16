@@ -6,5 +6,6 @@ Author: James Sipowicz
 Our game utilizes the following libraries that will need to be installed to run our game.
 These libraries/packages are installed by the syntax 'pip install ...' The dots represent library names.
 - pygame 
+- pytorch (torch torchvision)
 - time
 - random

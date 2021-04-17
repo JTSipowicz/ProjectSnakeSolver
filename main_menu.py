@@ -6,6 +6,7 @@ from game import Game
 
 scoreboard = Scoreboard()
 scoreboard.load_scores()
+game = Game()
 
 class Menu(Tk):
     def __init__(self):
@@ -30,7 +31,7 @@ class Menu(Tk):
         title_label = Label(self.menu_frame, text="Snake Solver", font=("Noto Sans", 32, "bold"), bg=COLORS['background'], fg=COLORS["text_color"])
         title_label.grid(column=0, row=0, pady=30)
 
-        play_button = Button(self.menu_frame, text="Play Snake", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=lambda: Game.game_loop(scoreboard, 'Player'))
+        play_button = Button(self.menu_frame, text="Play Snake", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=lambda: game.game_loop(scoreboard, 'Player'))
         play_button.grid(column=0, row=1, pady=30)
 
         AI_button = Button(self.menu_frame, text="Manage AI", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=self.show_ai_menu)

@@ -23,18 +23,18 @@ GAME_SPEED = 30
 clock = pygame.time.Clock()
 class Game:
 
-    def game_loop(scoreboard, mode):
-        pygame.init()
-        surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        pygame.display.set_caption("Snake Game")
-        font = pygame.font.SysFont(None, 24)   
-
-        snake = Snake(surface, COLORS["snake_color"], SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-        food = Food(surface, COLORS["food_color"], SCREEN_WIDTH, SCREEN_HEIGHT)
-
-        isGameRunning = True
-
+    def __init__(self):
+        pass
         
+        
+    def game_loop(self, scoreboard, mode):
+        pygame.init()
+        pygame.display.set_caption("Snake Game")
+        self.surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        font = pygame.font.SysFont(None, 24)
+        isGameRunning = True
+        self.snake = Snake(self.surface, COLORS["snake_color"], SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.food = Food(self.surface, COLORS["food_color"], SCREEN_WIDTH, SCREEN_HEIGHT)
 
         if mode == 'Player':
             scoreboard.set_type_Player()
@@ -42,9 +42,9 @@ class Game:
             scoreboard.set_type_AI()
 
         while isGameRunning:
-            surface.fill(COLORS["game_color"])
-            snake.draw_snake()
-            food.draw()
+            self.surface.fill(COLORS["game_color"])
+            self.snake.draw_snake()
+            self.food.draw()
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -54,31 +54,33 @@ class Game:
                 if mode == 'Player':
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_UP:
-                            snake.move_up()
+                            self.snake.move_up()
                         elif event.key == pygame.K_DOWN:
-                            snake.move_down()
+                            self.snake.move_down()
                         elif event.key == pygame.K_LEFT:
-                            snake.move_left()
+                            self.snake.move_left()
                         elif event.key == pygame.K_RIGHT:
-                            snake.move_right()
+                            self.snake.move_right()
                         if event.key == pygame.K_ESCAPE:
                             isGameRunning = False
                 elif mode == 'AI':
                     pass
                     
 
-            snake.move_snake()
+            self.snake.move_snake()
 
             # Display Score
             score_text = font.render(str(scoreboard.get_score()), True, COLORS['text_color'])
-            surface.blit(score_text, (300, 50))
+            self.surface.blit(score_text, (300, 50))
 
             # Boundary Collision
-            if snake.get_X() >= SCREEN_WIDTH or snake.get_X() < 0 or snake.get_Y() > SCREEN_HEIGHT or snake.get_Y() < 0:
+            if (self.snake.get_head().x >= SCREEN_WIDTH or self.snake.get_head().x < 0 
+                or self.snake.get_head().y > SCREEN_HEIGHT or self.snake.get_head().y < 0):
                 if mode == 'Player':
                     #isGameRunning = False
-                    snake.reset_snake()
-                    #food.respawn()
+                    self.snake.reset_snake()
+                    while self.is_bad_spawn():
+                        self.food.respawn()
                 else:
                     pass
                 scoreboard.update()
@@ -86,21 +88,23 @@ class Game:
                 scoreboard.reset_score()
 
             # Self Collision
-            if snake.check_self_collision():
+            if self.snake.check_self_collision():
                 if mode == 'Player':
                     #isGameRunning = False
-                    snake.reset_snake()
-                    #food.respawn()
+                    self.snake.reset_self.snake()
+                    while self.is_bad_spawn():
+                        self.food.respawn()
                 else:
                     pass
                 scoreboard.update()
                 scoreboard.save_scores()
                 scoreboard.reset_score()
             
-            # Food Collision
-            if compareSquares(snake.get_X(), food.get_X(), snake.get_Y(), food.get_Y(), snake.get_length(), food.get_length()):
-                snake.eat_food()
-                food.respawn()
+            # food Collision
+            if compareSquares(self.snake.get_head(), self.food.get_coor(), self.snake.get_length(), self.food.get_length()):
+                self.snake.eat_food()
+                while self.is_bad_spawn():
+                    self.food.respawn()
                 scoreboard.increase_score()
 
             pygame.display.update()    
@@ -108,5 +112,10 @@ class Game:
         
         pygame.quit()
 
-    def is_Collision():
-        pass
+    # Checks if food is spawing inside the self.snake body
+    def is_bad_spawn(self):
+        if self.snake.check_in_snake(self.food.get_coor(), self.food.get_length()):
+            return True
+        else:
+            return False
+        

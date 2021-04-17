@@ -1,5 +1,6 @@
 import pygame
 from math_functions import compareSquares
+from data_structures import Point
 
 LENGTH = 10
 STEP_DISTANCE = 10
@@ -8,31 +9,33 @@ class Snake:
     def __init__(self, surface, color, width, height):
         self.surface = surface
         self.color = color
-        self.head = [width, height]
+        self.head = Point(width / 2, height / 2)
         self.hasEaten = False
         self.direction = 'RIGHT'
-        self.segments = [[width, height], 
-                        [width - LENGTH, height], 
-                        [width - (LENGTH * 2), height], [width - (LENGTH * 3), height]]
+        self.segments = [Point(width, height), 
+                        Point(width - LENGTH, height), 
+                        Point(width - (LENGTH * 2), height), 
+                        Point(width - (LENGTH * 3), height)]
         self.draw_snake()
 
     def draw_snake(self):
         for seg in self.segments:
-            pygame.draw.rect(self.surface, self.color,[seg[0], seg[1], LENGTH, LENGTH])
+            pygame.draw.rect(self.surface, self.color,[seg.x, seg.y, LENGTH, LENGTH])
             
     
     def move_snake(self):
         if self.direction == 'UP':
-            self.head[1] -= STEP_DISTANCE
+            self.head.y -= STEP_DISTANCE
         if self.direction == 'DOWN':
-            self.head[1] += STEP_DISTANCE
+            self.head.y += STEP_DISTANCE
         if self.direction == 'LEFT':
-            self.head[0] -= STEP_DISTANCE
+            self.head.x -= STEP_DISTANCE
         if self.direction == 'RIGHT':
-            self.head[0] += STEP_DISTANCE
+            self.head.x += STEP_DISTANCE
 
-        # Updating Segments, [:] required to avoid shallow copy bug
-        self.segments.insert(0, self.head[:])
+        # Required syntax to avoid shallow copy
+        new_point = Point(self.head.x, self.head.y)
+        self.segments.insert(0, new_point)
         if self.hasEaten:
             self.hasEaten = False
         else:
@@ -57,20 +60,24 @@ class Snake:
     
     def check_self_collision(self):
         for segment in self.segments[1:]:
-            if self.head[0] == segment[0] and self.head[1] == segment[1]:
+            if self.head.x == segment.x and self.head.y == segment.y:
+                return True
+        return False
+
+    def check_in_snake(self, point, point_length):
+        for segment in self.segments:
+            if compareSquares(segment, point, LENGTH, point_length):
                 return True
         return False
 
     def reset_snake(self):
-        self.head = [300, 200]
-        self.segments = [[300, 200], [300 - LENGTH, 200], [300 - (LENGTH * 2), 200], [300 - (LENGTH * 3), 200]]
+        self.head = Point(300, 200)
+        self.segments = [Point(300, 200), Point(300 - LENGTH, 200), Point(300 - (LENGTH * 2), 200), Point(300 - (LENGTH * 3), 200)]
         self.direction = 'RIGHT'
 
     def get_length(self):
         return LENGTH
     def get_direction(self):
         return self.direction
-    def get_X(self):
-        return self.head[0]
-    def get_Y(self):
-        return self.head[1]
+    def get_head(self):
+        return self.head

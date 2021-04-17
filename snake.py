@@ -68,6 +68,8 @@ class Snake:
 
     def get_length(self):
         return LENGTH
+    def get_direction(self):
+        return self.direction
     def get_X(self):
         return self.head[0]
     def get_Y(self):

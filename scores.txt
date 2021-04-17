@@ -5,6 +5,6 @@
 4|Player|49
 5|Player|46
 6|Player|42
-7|Player|39
-8|Player|38
-9|Player|30
+7|Player|40
+8|Player|39
+9|Player|38

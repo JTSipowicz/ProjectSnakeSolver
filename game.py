@@ -7,24 +7,37 @@ from snake import Snake
 from food import Food
 from math_functions import compareSquares
 
+# Reset
+# Reward
+# Play() -> Direction
+# Game_iteration
+# is_Collision
+
+SCREEN_WIDTH = 600
+SCREEN_HEIGHT = 400
+GAME_SPEED = 30
+
+
+
+clock = pygame.time.Clock()
+
 def game_loop(scoreboard, mode):
     pygame.init()
-    SCREEN_WIDTH = 600
-    SCREEN_HEIGHT = 400
-
-    GAME_SPEED = 10
-    isGameRunning = True
-
     surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Snake Game")
-    font = pygame.font.SysFont(None, 24)
-
-    clock = pygame.time.Clock()
+    font = pygame.font.SysFont(None, 24)   
 
     snake = Snake(surface, COLORS["snake_color"], SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     food = Food(surface, COLORS["food_color"], SCREEN_WIDTH, SCREEN_HEIGHT)
+
+    isGameRunning = True
+
+    
+
     if mode == 'Player':
         scoreboard.set_type_Player()
+    else:
+        scoreboard.set_type_AI()
 
     while isGameRunning:
         surface.fill(COLORS["game_color"])
@@ -48,10 +61,8 @@ def game_loop(scoreboard, mode):
                         snake.move_right()
                     if event.key == pygame.K_ESCAPE:
                         isGameRunning = False
-                    if event.key == pygame.K_SPACE:
-                        pygame.time.wait(30000)
             elif mode == 'AI':
-                pass
+                
 
         snake.move_snake()
 
@@ -61,14 +72,24 @@ def game_loop(scoreboard, mode):
 
         # Boundary Collision
         if snake.get_X() >= SCREEN_WIDTH or snake.get_X() < 0 or snake.get_Y() > SCREEN_HEIGHT or snake.get_Y() < 0:
-            isGameRunning = False
+            if mode == 'Player':
+                #isGameRunning = False
+                snake.reset_snake()
+                #food.respawn()
+            else:
+                pass
             scoreboard.update()
             scoreboard.save_scores()
             scoreboard.reset_score()
 
         # Self Collision
         if snake.check_self_collision():
-            isGameRunning = False
+            if mode == 'Player':
+                #isGameRunning = False
+                snake.reset_snake()
+                #food.respawn()
+            else:
+                pass
             scoreboard.update()
             scoreboard.save_scores()
             scoreboard.reset_score()

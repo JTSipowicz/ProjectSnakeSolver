@@ -1,7 +1,7 @@
 import pygame
 import random
 
-FOOD_LENGTH = 10
+FOOD_LENGTH = 20
 BORDER = 40
 
 class Food:

@@ -5,18 +5,21 @@ LENGTH = 10
 STEP_DISTANCE = 10
 
 class Snake:
-    def __init__(self, surface, color, x, y):
+    def __init__(self, surface, color, width, height):
         self.surface = surface
         self.color = color
-        self.head = [x, y]
+        self.head = [width, height]
         self.hasEaten = False
         self.direction = 'RIGHT'
-        self.segments = [[x, y], [x - LENGTH, y], [x - (LENGTH * 2), y], [x - (LENGTH * 3), y]]
+        self.segments = [[width, height], 
+                        [width - LENGTH, height], 
+                        [width - (LENGTH * 2), height], [width - (LENGTH * 3), height]]
         self.draw_snake()
 
     def draw_snake(self):
         for seg in self.segments:
             pygame.draw.rect(self.surface, self.color,[seg[0], seg[1], LENGTH, LENGTH])
+            
     
     def move_snake(self):
         if self.direction == 'UP':
@@ -31,7 +34,6 @@ class Snake:
         # Updating Segments, [:] required to avoid shallow copy bug
         self.segments.insert(0, self.head[:])
         if self.hasEaten:
-            # Don't pop last item if eaten food
             self.hasEaten = False
         else:
             self.segments.pop()
@@ -58,6 +60,11 @@ class Snake:
             if self.head[0] == segment[0] and self.head[1] == segment[1]:
                 return True
         return False
+
+    def reset_snake(self):
+        self.head = [300, 200]
+        self.segments = [[300, 200], [300 - LENGTH, 200], [300 - (LENGTH * 2), 200], [300 - (LENGTH * 3), 200]]
+        self.direction = 'RIGHT'
 
     def get_length(self):
         return LENGTH

@@ -1,21 +1,20 @@
-def compareSquares(x1, x2, y1, y2, square1_length, square2_length):
-    low_left1 = (x1, y1)
-    low_right1 = (x1 + square1_length, y1)
-    top_left1 = (x1, y1 - square1_length)
-    top_right1 = (x1 + square1_length, y1 - square1_length)
+from data_structures import Rect
 
-    # Make Square 2 Smaller by One pixel
-    low_left2 = (x2 + 1, y2 - 1)
-    low_right2 = (x2 + square2_length + 1, y2 - 1)
-    top_left2 = (x2 - 1, y2 - square2_length + 1)
-    top_right2 = (x2 + square2_length - 1, y2 - square1_length + 1)
+def compareSquares(x1, x2, y1, y2, rect1_length, rect2_length):
+    right = x1 + rect1_length
+    top = y1 - rect1_length
+    left = x1
+    down = y1
+    RectA = Rect(right, top, left, down)
 
-    if low_right1[0] > low_left2[0] and low_left1[0] < low_right2[0] and low_left1[1] > (top_left2[1] - 1) and top_left1[1] < (low_left2[1] + 1):
-                    return True
-    elif low_left1[0] < low_right2[0] and low_right1[0] > low_left2[0] and low_left1[1] > (top_left2[1] - 1) and top_left1[1] < (low_left2[1] + 1):
-                    return True
-    elif low_left1[1] > top_left2[1] and top_left1[1] < low_left2[1] and low_left1[0] < (low_right2[0] + 1) and low_right1[0] > (low_left2[0] - 1):
-                    return True
-    elif top_left1[1] < low_left2[1] and low_left1[1] > top_left2[1] and low_left1[0] < (low_right2[0] + 1) and low_right1[0] > (low_left2[0] - 1):
-                    return True
-    return False
+    right = x2 + rect2_length
+    top = y2 - rect2_length
+    left = x2
+    down = y2
+    RectB = Rect(right, top, left, down)
+    
+    if (RectA.left < RectB.right and RectA.right > RectB.left
+        and RectA.top < RectB.down and RectA.down > RectB.top):
+        return True
+    else:
+        return False

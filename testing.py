@@ -33,9 +33,9 @@ while isRunning:
     heading1 = font.render("Testing Collision when exactly adjacent. Expectation = Collision", True, TEXT)
     surface.blit(heading1, (100, 70))
     if compareSquares(sq1, sq2, sq1_width, sq2_width):
-        text = font.render("[Collision] x1 = {}, x2 = {}".format(sq1.x, sq2.x), True, TEXT)
+        text = font.render("[Collision] sq1 = {}, {} sq2 = {}, {}".format(sq1.x, sq1.y, sq2.x, sq2.y), True, TEXT)
     else:
-        text = font.render("[No Collision] x1 = {}, x2 = {}".format(sq1.x, sq2.x), True, TEXT)
+        text = font.render("[No Collision] sq1 = {}, {} sq2 = {}, {}".format(sq1.x, sq1.y, sq2.x, sq2.y), True, TEXT)
     surface.blit(text, (300, 110))
 
     # TESTING CASE II
@@ -51,9 +51,9 @@ while isRunning:
     heading1 = font.render("Testing Collision when one pixel inside. Expectation = Collision", True, TEXT)
     surface.blit(heading1, (100, 170))
     if compareSquares(sq3, sq4, sq3_width, sq4_width):
-        text = font.render("[Collision] x1 = {}, x2 = {}".format(sq3.x, sq4.x), True, TEXT)
+        text = font.render("[Collision] sq3 = {}, {} sq4 = {}, {}".format(sq3.x, sq3.y, sq4.x, sq4.y), True, TEXT)
     else:
-        text = font.render("[No Collision] x1 = {}, x2 = {}".format(sq3.x, sq4.x), True, TEXT)
+        text = font.render("[No Collision] sq3 = {}, {} sq4 = {}, {}".format(sq3.x, sq3.y, sq4.x, sq4.y), True, TEXT)
     surface.blit(text, (300, 210))
 
     # TESTING CASE III
@@ -69,9 +69,9 @@ while isRunning:
     heading1 = font.render("Testing Collision when one pixel away. Expectation = No Collision", True, TEXT)
     surface.blit(heading1, (100, 270))
     if compareSquares(sq5, sq6, sq5_width, sq6_width):
-        text = font.render("[Collision] x1 = {}, x2 = {}".format(sq5.x, sq6.x), True, TEXT)
+        text = font.render("[Collision] sq5 = {}, {} sq6 = {}, {}".format(sq5.x, sq5.y, sq6.x, sq6.y), True, TEXT)
     else:
-        text = font.render("[No Collision] x1 = {}, x2 = {}".format(sq5.x, sq6.x), True, TEXT)
+        text = font.render("[No Collision] sq5 = {}, {} sq6 = {}, {}".format(sq5.x, sq5.y, sq6.x, sq6.y), True, TEXT)
     surface.blit(text, (300, 310))
 
     # TESTING CORNERS
@@ -91,9 +91,9 @@ while isRunning:
     # Comparison SQ7 and SQ8
     
     if compareSquares(sq7, sq8, sq7_width, sq8_width):
-        text = font.render("[Collision] x1 = {}, x2 = {}".format(sq7.x, sq8.x), True, TEXT)
+        text = font.render("[Collision] sq7 = {}, {} sq8 = {}, {}".format(sq7.x, sq7.y, sq8.x, sq8.y), True, TEXT)
     else:
-        text = font.render("[No Collision] x1 = {}, x2 = {}".format(sq7.x, sq8.x), True, TEXT)
+        text = font.render("[No Collision] sq7 = {}, {} sq8 = {}, {}".format(sq7.x, sq7.y, sq8.x, sq8.y), True, TEXT)
     surface.blit(text, (300, 420))
 
     # TESTING CASE V BOTTOM
@@ -108,9 +108,9 @@ while isRunning:
     # Comparison SQ9 and SQ10
     
     if compareSquares(sq9, sq10, sq9_width, sq10_width):
-        text = font.render("[Collision] x1 = {}, x2 = {}".format(sq9.x, sq10.x), True, TEXT)
+        text = font.render("[Collision] sq9 = {}, {} sq10 = {}, {}".format(sq9.x, sq9.y, sq10.x, sq10.y), True, TEXT)
     else:
-        text = font.render("[No Collision] x1 = {}, x2 = {}".format(sq9.x, sq10.x), True, TEXT)
+        text = font.render("[No Collision] sq9 = {}, {} sq10 = {}, {}".format(sq9.x, sq9.y, sq10.x, sq10.y), True, TEXT)
     surface.blit(text, (300, 520))
 
     # Testing Case VI Square Exactly Within Square
@@ -127,9 +127,9 @@ while isRunning:
     # Comparison sq11 and sq12
     
     if compareSquares(sq11, sq12, sq11_width, sq12_width):
-        text = font.render("[Collision] x1 = {}, x2 = {}".format(sq11.x, sq12.x), True, TEXT)
+        text = font.render("[Collision] sq11 = {}, {} sq12 = {}, {}".format(sq11.x, sq11.y, sq12.x, sq12.y), True, TEXT)
     else:
-        text = font.render("[No Collision] x1 = {}, x2 = {}".format(sq11.x, sq12.x), True, TEXT)
+        text = font.render("[No Collision] sq11 = {}, {} sq12 = {}, {}".format(sq11.x, sq11.y, sq12.x, sq12.y), True, TEXT)
     surface.blit(text, (300, 720))
 
     for event in pygame.event.get():

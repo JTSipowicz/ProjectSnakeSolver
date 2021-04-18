@@ -3,10 +3,12 @@ from tkinter import *
 from scoreboard import Scoreboard
 from colors import COLORS
 from game import Game
+from agent import Agent
 
 scoreboard = Scoreboard()
 scoreboard.load_scores()
-game = Game()
+game = Game(30, scoreboard, width=640, height=480)
+agent = Agent()
 
 class Menu(Tk):
     def __init__(self):
@@ -31,7 +33,7 @@ class Menu(Tk):
         title_label = Label(self.menu_frame, text="Snake Solver", font=("Noto Sans", 32, "bold"), bg=COLORS['background'], fg=COLORS["text_color"])
         title_label.grid(column=0, row=0, pady=30)
 
-        play_button = Button(self.menu_frame, text="Play Snake", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=lambda: game.game_loop(scoreboard, 'Player'))
+        play_button = Button(self.menu_frame, text="Play Snake", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=lambda: game.player_game_loop())
         play_button.grid(column=0, row=1, pady=30)
 
         AI_button = Button(self.menu_frame, text="Manage AI", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=self.show_ai_menu)
@@ -61,8 +63,8 @@ class Menu(Tk):
         ai_go_back_button = Button(self.ai_frame, text="Back", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=self.show_main_menu)
         ai_go_back_button.grid(column=1, row=0, pady=30, sticky="E")
 
-        fit_button = Button(self.ai_frame, text="Fit Model", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], width=14, command=self.fit_model())
-        fit_button.grid(column=0, row=1, pady=30, columnspan=2)
+        train_button = Button(self.ai_frame, text="Train Model", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], width=14, command=lambda: agent.train(scoreboard))
+        train_button.grid(column=0, row=1, pady=30, columnspan=2)
 
         test_button = Button(self.ai_frame, text="Test Model", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], width=14, command=self.test_model)
         test_button.grid(column=0, row=2, pady=30, columnspan=2)

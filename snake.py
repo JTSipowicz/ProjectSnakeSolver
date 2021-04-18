@@ -16,9 +16,8 @@ class Snake:
                         Point(width - LENGTH, height), 
                         Point(width - (LENGTH * 2), height), 
                         Point(width - (LENGTH * 3), height)]
-        self.draw_snake()
 
-    def draw_snake(self):
+    def draw(self):
         for seg in self.segments:
             pygame.draw.rect(self.surface, self.color,[seg.x, seg.y, LENGTH, LENGTH])
             
@@ -54,7 +53,27 @@ class Snake:
     def move_right(self):
         if self.direction != 'LEFT':
             self.direction = 'RIGHT'
-
+    
+    def turn_right(self):
+        if self.direction != 'RIGHT':
+            self.direction = 'DOWN'
+        if self.direction != 'UP':
+            self.direction = 'RIGHT'
+        if self.direction != 'LEFT':
+            self.direction = 'UP'
+        if self.direction != 'DOWN':
+            self.direction = 'LEFT'
+    
+    def turn_left(self):
+        if self.direction != 'RIGHT':
+            self.direction = 'UP'
+        if self.direction != 'UP':
+            self.direction = 'LEFT'
+        if self.direction != 'DOWN':
+            self.direction = 'UP'
+        if self.direction != 'DOWN':
+            self.direction = 'RIGHT'
+        
     def eat_food(self):
         self.hasEaten = True
     
@@ -70,7 +89,7 @@ class Snake:
                 return True
         return False
 
-    def reset_snake(self):
+    def reset(self):
         self.head = Point(300, 200)
         self.segments = [Point(300, 200), Point(300 - LENGTH, 200), Point(300 - (LENGTH * 2), 200), Point(300 - (LENGTH * 3), 200)]
         self.direction = 'RIGHT'

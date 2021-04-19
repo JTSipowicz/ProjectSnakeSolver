@@ -1,121 +1,200 @@
 import pygame
-import time
-
+import random
+from data_structs import *
 from scoreboard import Scoreboard
-from colors import COLORS
-from snake import Snake
 from food import Food
-from math_functions import compareSquares
-from data_structures import Point
+from snake import Snake
+import numpy as np
 
-# Reset
-# Reward
-# Play() -> Direction
-# Game_iteration
-# is_Collision
+pygame.init()
+font = pygame.font.SysFont('arial', 25)
 
-SCREEN_WIDTH = 600
-SCREEN_HEIGHT = 400
-GAME_SPEED = 30
+SPEED = 40
+HUMAN_SPEED = 20
+BLOCK_SIZE = 20
+
+class SnakeGame:
+
+    def __init__(self, scoreboard, w=640, h=480):
+        self.w = w
+        self.h = h
+        self.scoreboard = scoreboard
+        # init display
+        self.display = pygame.display.set_mode((self.w, self.h))
+        self.food = Food(self.display, COLORS["food_color"], 20, self.w, self.h)
+        pygame.display.set_caption('Snake')
+        self.clock = pygame.time.Clock()
+        self.reset()
 
 
+    def reset(self):
+        # init game state
+        self.direction = Direction.RIGHT
+        self.head = Point(self.w/2, self.h/2)
+        self.snake = [self.head,
+                      Point(self.head.x - BLOCK_SIZE, self.head.y),
+                      Point(self.head.x-(2 * BLOCK_SIZE), self.head.y)]
+        #self.snake.reset(self.w, self.h)
+        self.scoreboard.update()
+        self.scoreboard.save_scores()
+        self.scoreboard.reset()
+        self.food.spawn()
+        self.frame_iteration = 0
 
-clock = pygame.time.Clock()
-class Game:
-
-    def __init__(self):
-        pass
+    def play_step(self, action):
+        self.frame_iteration += 1
+        # 1. collect user input
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
         
+        # 2. move
+        self.move(action) # update the head
+        self.snake.insert(0, self.head)     # temp change
         
-    def game_loop(self, scoreboard, mode):
-        pygame.init()
-        pygame.display.set_caption("Snake Game")
-        self.surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        font = pygame.font.SysFont(None, 24)
-        isGameRunning = True
-        self.snake = Snake(self.surface, COLORS["snake_color"], SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.food = Food(self.surface, COLORS["food_color"], SCREEN_WIDTH, SCREEN_HEIGHT)
+        # 3. check if game over
+        reward = 0
+        game_over = False
+        if self.is_collision() or self.frame_iteration > 100 * len(self.snake):
+            game_over = True
+            reward = -10
+            return reward, game_over, self.scoreboard.get_score()
 
-        if mode == 'Player':
-            scoreboard.set_type_Player()
+        # 4. place new food or just move
+        if self.head == self.food.get_coor():
+            self.scoreboard.increase()
+            reward = 10
+            self.food.spawn()
         else:
-            scoreboard.set_type_AI()
+            self.snake.pop()
+        
+        # 5. update ui and clock
+        self.update()
+        self.clock.tick(SPEED)
+        # 6. return game over and score
+        return reward, game_over, self.scoreboard.get_score()
 
+    def game_loop(self):
+        isGameRunning = True
+        self.reset()
         while isGameRunning:
-            self.surface.fill(COLORS["game_color"])
-            self.snake.draw_snake()
-            self.food.draw()
-            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    isGameRunning = False
-                
-                # Control Input
-                if mode == 'Player':
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_UP:
-                            self.snake.move_up()
-                        elif event.key == pygame.K_DOWN:
-                            self.snake.move_down()
-                        elif event.key == pygame.K_LEFT:
-                            self.snake.move_left()
-                        elif event.key == pygame.K_RIGHT:
-                            self.snake.move_right()
-                        if event.key == pygame.K_ESCAPE:
-                            isGameRunning = False
-                elif mode == 'AI':
-                    pass
-                    
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP:
+                        self.move_up()
+                    elif event.key == pygame.K_DOWN:
+                        self.move_down()
+                    elif event.key == pygame.K_LEFT:
+                        self.move_left()
+                    elif event.key == pygame.K_RIGHT:
+                        self.move_right()
+                    if event.key == pygame.K_ESCAPE:
+                        isGameRunning = False
 
-            self.snake.move_snake()
-
-            # Display Score
-            score_text = font.render(str(scoreboard.get_score()), True, COLORS['text_color'])
-            self.surface.blit(score_text, (300, 50))
-
-            # Boundary Collision
-            if (self.snake.get_head().x >= SCREEN_WIDTH or self.snake.get_head().x < 0 
-                or self.snake.get_head().y > SCREEN_HEIGHT or self.snake.get_head().y < 0):
-                if mode == 'Player':
-                    #isGameRunning = False
-                    self.snake.reset_snake()
-                    while self.is_bad_spawn():
-                        self.food.respawn()
-                else:
-                    pass
-                scoreboard.update()
-                scoreboard.save_scores()
-                scoreboard.reset_score()
-
-            # Self Collision
-            if self.snake.check_self_collision():
-                if mode == 'Player':
-                    #isGameRunning = False
-                    self.snake.reset_self.snake()
-                    while self.is_bad_spawn():
-                        self.food.respawn()
-                else:
-                    pass
-                scoreboard.update()
-                scoreboard.save_scores()
-                scoreboard.reset_score()
+            self.player_move()
+            self.snake.insert(0, self.head)
             
-            # food Collision
-            if compareSquares(self.snake.get_head(), self.food.get_coor(), self.snake.get_length(), self.food.get_length()):
-                self.snake.eat_food()
-                while self.is_bad_spawn():
-                    self.food.respawn()
-                scoreboard.increase_score()
+            if self.is_collision():
+                self.reset()
 
-            pygame.display.update()    
-            clock.tick(GAME_SPEED)
-        
+            if self.head == self.food.get_coor():
+                self.scoreboard.increase()
+                self.food.spawn()
+            else:
+                self.snake.pop()
+            
+            self.update()
+            self.clock.tick(HUMAN_SPEED)
+
         pygame.quit()
 
-    # Checks if food is spawing inside the self.snake body
-    def is_bad_spawn(self):
-        if self.snake.check_in_snake(self.food.get_coor(), self.food.get_length()):
-            return True
-        else:
-            return False
         
+                
+
+
+    def is_collision(self, pt=None):
+        if pt is None:
+            pt = self.head
+        # hits boundary
+        if pt.x > self.w - BLOCK_SIZE or pt.x < 0 or pt.y > self.h - BLOCK_SIZE or pt.y < 0:
+            return True
+        # hits itself
+        if pt in self.snake[1:]:
+            return True
+
+        return False
+
+
+    def update(self):
+        self.display.fill(COLORS["background"])
+        for pt in self.snake:
+            pygame.draw.rect(self.display, COLORS["snake_color"], pygame.Rect(pt.x, pt.y, BLOCK_SIZE, BLOCK_SIZE))
+        self.food.draw()
+        text = font.render(str(self.scoreboard.get_score()), True, COLORS["text_color"])
+        self.display.blit(text, [self.w / 2, 30])
+        pygame.display.flip()
+
+    def  player_move(self):
+        x = self.head.x
+        y = self.head.y
+        if self.direction == Direction.UP:
+            y -= BLOCK_SIZE
+        if self.direction == Direction.DOWN:
+            y += BLOCK_SIZE
+        if self.direction == Direction.LEFT:
+            x -= BLOCK_SIZE
+        if self.direction == Direction.RIGHT:
+            x += BLOCK_SIZE
+        
+        self.head = Point(x, y)
+
+    def move(self, action):
+        # [straight, right, left]
+
+        clock_wise = [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP]
+        idx = clock_wise.index(self.direction)
+
+        if np.array_equal(action, [1, 0, 0]):
+            new_dir = clock_wise[idx] # no change
+        elif np.array_equal(action, [0, 1, 0]):
+            next_idx = (idx + 1) % 4
+            new_dir = clock_wise[next_idx] # right turn r -> d -> l -> u
+        else: # [0, 0, 1]
+            next_idx = (idx - 1) % 4
+            new_dir = clock_wise[next_idx] # left turn r -> u -> l -> d
+
+        self.direction = new_dir
+
+        x = self.head.x
+        y = self.head.y
+        if self.direction == Direction.RIGHT:
+            x += BLOCK_SIZE
+        elif self.direction == Direction.LEFT:
+            x -= BLOCK_SIZE
+        elif self.direction == Direction.DOWN:
+            y += BLOCK_SIZE
+        elif self.direction == Direction.UP:
+            y -= BLOCK_SIZE
+
+        self.head = Point(x, y)
+    
+    def move_up(self):
+        if self.direction != Direction.DOWN:
+            self.direction = Direction.UP
+    def move_down(self):
+        if self.direction != Direction.UP:
+            self.direction = Direction.DOWN
+    def move_left(self):
+        if self.direction != Direction.RIGHT:
+            self.direction = Direction.LEFT
+    def move_right(self):
+        if self.direction != Direction.LEFT:
+            self.direction = Direction.RIGHT
+
+    def get_food_cor(self):
+        return self.food.get_coor()
+

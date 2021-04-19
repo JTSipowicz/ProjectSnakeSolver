@@ -1,12 +1,14 @@
 from tkinter import *
 
 from scoreboard import Scoreboard
-from colors import COLORS
-from game import Game
+from data_structs import COLORS
+from game import SnakeGame
+from agent import Agent, train
 
 scoreboard = Scoreboard()
 scoreboard.load_scores()
-game = Game()
+game = SnakeGame(scoreboard)
+agent = Agent()
 
 class Menu(Tk):
     def __init__(self):
@@ -31,7 +33,7 @@ class Menu(Tk):
         title_label = Label(self.menu_frame, text="Snake Solver", font=("Noto Sans", 32, "bold"), bg=COLORS['background'], fg=COLORS["text_color"])
         title_label.grid(column=0, row=0, pady=30)
 
-        play_button = Button(self.menu_frame, text="Play Snake", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=lambda: game.game_loop(scoreboard, 'Player'))
+        play_button = Button(self.menu_frame, text="Play Snake", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=self.player_game)
         play_button.grid(column=0, row=1, pady=30)
 
         AI_button = Button(self.menu_frame, text="Manage AI", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=self.show_ai_menu)
@@ -61,7 +63,7 @@ class Menu(Tk):
         ai_go_back_button = Button(self.ai_frame, text="Back", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], command=self.show_main_menu)
         ai_go_back_button.grid(column=1, row=0, pady=30, sticky="E")
 
-        fit_button = Button(self.ai_frame, text="Fit Model", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], width=14, command=self.fit_model())
+        fit_button = Button(self.ai_frame, text="Fit Model", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], width=14, command=self.AI_game)
         fit_button.grid(column=0, row=1, pady=30, columnspan=2)
 
         test_button = Button(self.ai_frame, text="Test Model", font=("Noto Sans", 24, "bold"), bg=COLORS["box_color"], fg=COLORS["light_text"], width=14, command=self.test_model)
@@ -95,6 +97,12 @@ class Menu(Tk):
 
     def show_statistics(self):
         pass
+
+    def player_game(self):
+        game.game_loop()
+    
+    def AI_game(self):
+        train(scoreboard)
     
 app = Menu()
 app.mainloop()

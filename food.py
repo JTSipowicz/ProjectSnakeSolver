@@ -1,27 +1,24 @@
 import pygame
 import random
-from data_structures import Point
-
-FOOD_LENGTH = 20
-BORDER = 40
+from data_structs import Point
 
 class Food:
-    def __init__(self, surface, color, screen_width, screen_height):
+    def __init__(self, surface, color, block_size, max_x, max_y):
         self.surface = surface
         self.color = color
-        self.width_bound = screen_width
-        self.height_bound = screen_height
-        self.position = Point(random.randrange(BORDER, (self.width_bound - BORDER)), random.randrange(BORDER, (self.height_bound - BORDER)))
-
-
-    def respawn(self):
-        self.position = Point(random.randrange(BORDER, (self.width_bound - BORDER)), random.randrange(BORDER, (self.height_bound - BORDER)))
+        self.block_size = block_size
+        self.max_x = max_x
+        self.max_y = max_y
+        self.coor = None
+        self.spawn()
+    
+    def spawn(self):
+        x = random.randint(0, (self.max_x - self.block_size ) // self.block_size ) * self.block_size
+        y = random.randint(0, (self.max_y - self.block_size ) // self.block_size ) * self.block_size
+        self.coor = Point(x, y)
 
     def draw(self):
-        pygame.draw.rect(self.surface, self.color, [self.position.x, self.position.y, FOOD_LENGTH, FOOD_LENGTH])
-
+        pygame.draw.rect(self.surface, self.color, (self.coor.x, self.coor.y, self.block_size, self.block_size))
+        
     def get_coor(self):
-        return self.position
-    
-    def get_length(self):
-        return FOOD_LENGTH
+        return self.coor

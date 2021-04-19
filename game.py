@@ -3,7 +3,6 @@ import random
 from data_structs import *
 from scoreboard import Scoreboard
 from food import Food
-from snake import Snake
 import numpy as np
 
 pygame.init()

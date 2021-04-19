@@ -9,10 +9,10 @@ class Scoreboard:
         self.isAI = False
         self.high_scores = []
     
-    def increase_score(self):
+    def increase(self):
         self.score += 1
 
-    def reset_score(self):
+    def reset(self):
         self.score = 0
 
     def update(self):
@@ -34,7 +34,7 @@ class Scoreboard:
         # Pop the smallest score
         self.high_scores.pop()
         # Move all places by one since score was given place 0
-        temp_var = 0
+        temp_var = 1
         for element in self.high_scores:
             element['Place'] = 0 + temp_var
             temp_var += 1

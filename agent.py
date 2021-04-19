@@ -2,7 +2,9 @@ import torch
 import random
 import numpy as np
 from collections import deque
-from game import SnakeGameAI, Direction, Point
+import copy
+from game import SnakeGame
+from data_structs import Direction, Point
 from model import Linear_QNet, QTrainer
 from helper import plot
 
@@ -22,7 +24,7 @@ class Agent:
 
 
     def get_state(self, game):
-        head = game.snake[0]
+        head = game.head
         point_l = Point(head.x - 20, head.y)
         point_r = Point(head.x + 20, head.y)
         point_u = Point(head.x, head.y - 20)
@@ -59,10 +61,10 @@ class Agent:
             dir_d,
             
             # Food location 
-            game.food.x < game.head.x,  # food left
-            game.food.x > game.head.x,  # food right
-            game.food.y < game.head.y,  # food up
-            game.food.y > game.head.y  # food down
+            game.get_food_cor().x < game.head.x,  # food left
+            game.get_food_cor().x > game.head.x,  # food right
+            game.get_food_cor().y < game.head.y,  # food up
+            game.get_food_cor().y > game.head.y  # food down
             ]
 
         return np.array(state, dtype=int)
@@ -100,13 +102,13 @@ class Agent:
         return final_move
 
 
-def train():
+def train(scoreboard):
     plot_scores = []
     plot_mean_scores = []
     total_score = 0
     record = 0
     agent = Agent()
-    game = SnakeGameAI()
+    game = SnakeGame(scoreboard)
     while True:
         # get old state
         state_old = agent.get_state(game)

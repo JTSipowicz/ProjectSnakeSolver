@@ -3,6 +3,7 @@ import random
 import numpy as np
 from collections import deque
 import copy
+from scoreboard import Scoreboard
 from game import SnakeGame
 from data_structs import Direction, Point
 from model import Linear_QNet, QTrainer
@@ -11,6 +12,7 @@ from helper import plot
 MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
 LR = 0.001
+scoreboard = Scoreboard()
 
 class Agent:
 
@@ -102,7 +104,7 @@ class Agent:
         return final_move
 
 
-def train(scoreboard):
+def train():
     plot_scores = []
     plot_mean_scores = []
     total_score = 0

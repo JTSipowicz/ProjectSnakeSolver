@@ -34,4 +34,3 @@ If a version isn't completely correct, save it as a branch.
 Step 2:
 - Create an AI mode that can start its own game.
 - Use PyTorch and Deep Q learning to train the AI.
-- 

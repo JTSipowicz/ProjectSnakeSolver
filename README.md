@@ -9,22 +9,20 @@ Step 1:
   
 *Which suite are we programming this is?*
 
-Google Colab 
+Virtual Studio Code
   
 *What are the steps it takes to make a game of Snake in Python?*
 
-1. Establist Connection with Google Colab in Google Drive Directory
-2. Install appropriate libraries (Pygame)
-3. Create a game Screen
-4. Create the Snake object
-5. Make the Snake move.
-6. Make sure it says 'Game Over' when the Snake hits the boundary edge.
-7. Add the presence of Food
-8. Increasing the Length of the Snake
-9. Make sure it says 'Game Over' when the Snake hits it's tail.
-10. Display the Score whenever the game ends.
-11. Make sure it displays in the terminal how the game ended with record of score.
-12. Make sure game states are stored in a standard formatting.
+1. Install appropriate libraries
+2. Create a game Screen
+3. Create the Snake object
+4. Make the Snake move.
+5. Make sure it says 'Game Over' when the Snake hits the boundary edge.
+6. Add the presence of Food
+7. Increasing the Length of the Snake
+8. Make sure it says 'Game Over' when the Snake hits it's tail.
+9. Display the Score whenever the game ends.
+10. Make sure it displays in the terminal how the game ended with record of score.
 
 *How are we gonna document this?*
 
@@ -35,4 +33,5 @@ If a version isn't completely correct, save it as a branch.
 
 Step 2:
 - Create an AI mode that can start its own game.
-- Use Tensorflow train the AI.
+- Use PyTorch and Deep Q learning to train the AI.
+- 

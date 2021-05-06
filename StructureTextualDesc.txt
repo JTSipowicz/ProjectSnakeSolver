@@ -1,0 +1,83 @@
+Reinforcement learning (RL)
+	An area of machine learning converned with how software agents ought to
+ 	take actions in an environment in order to maximize the notion of cumulative reward.
+Or :
+	RL is teaching a software agent how to behave in an environment by telling it how good it's doing.
+
+Deep Q Learning
+	This approach extends reinforcement learning by using a deep neural network to predict the actions.
+
+Basic Model Setup for doing the game:
+
+	Agent:
+		- game
+		- model
+
+	Training:
+		- state = get_state(game)
+		- action = get_move(state):
+			-> model.predict()
+		- reward, game_over, score = game.play_set(action)
+		- new_state = get_state(game)
+		- remember
+		- model.train()
+
+	Game (pyGame):
+	- play_step(action)
+		-> reward, game_over, score
+
+	Model (pyTorch):
+	Linear_QNet (DQN)
+	- model.predict(state)
+		-> action
+
+How do we define a sort of reward for the Agent?
+	Reward:
+		-> Eat food: +10
+		-> Game Over: -10
+		-> else: 	0 
+
+How do we define the actions the Agent will take when playing the game?
+	Action:
+		-> [1, 0, 0] == straight
+		-> [0, 1, 0] == right turn
+		-> [0, 0, 1] == left turn
+
+What are the different state of the game?
+	States: (11)
+		[danger straight, danger right, danger left,
+
+		direction left, direction right, direction up, direction down,
+
+		food left, food right, food up, food down]
+	}
+
+Concept of (Deep) Q Learning
+	Q Value = Quality of action
+		0: Init Q Value (= init model)
+		1: Choose Action (model.predict(state)) (or random move)
+		2: Perform Action
+		3: Measure reward
+		4: Update Q value (+train model)
+		<- Repeat Step 1
+
+Optimized Loss Function for our AI
+	How would we update the Q value like we stated in Step 4?
+		-> Bellman Equation:
+			new_Q(s,a) = Q(s, a) + α[R(s,a) + λ * max_Q'(s', a') - Q(s, a)]
+
+			>>> new_Q(s,a) = New Q value for that state and action
+			>>> Q(s, a) = Current Q value
+			>>> α = Learning rate
+			>>> R(s,a) = Reward for taking action at that state
+			>>> λ = Discount rate
+			>>> max_Q'(s', a') = Maximum expected future reward given the new s' 
+				and all possible actions in the new state
+
+		-> Q Update Rule Simplication:
+			>>> Q = model.predict(state_0)
+			>>> new_Q = R + λ * max(Q(state_1))
+
+		-> Loss Function:
+			>>> loss = (new_Q - Q)^2
+				- which is basically 'Mean Squared Error'

@@ -13,7 +13,7 @@ HUMAN_SPEED = 20
 BLOCK_SIZE = 20
 
 class SnakeGame:
-    def __init__(self, scoreboard, w=400, h=400):
+    def __init__(self, scoreboard, w=600, h=600):
         self.w = w
         self.h = h
         self.scoreboard = scoreboard
